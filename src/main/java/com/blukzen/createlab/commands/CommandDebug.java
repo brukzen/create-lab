@@ -25,9 +25,8 @@ public class CommandDebug implements Command<CommandSource> {
         ServerPlayerEntity player = context.getSource().getPlayerOrException();
 
         player.getCapability(LaboratoryCapability.LABORATORY_CAPABILITY).ifPresent(lab -> {
-            player.sendMessage(new StringTextComponent("Gamemode: " + lab.getGamemode().getName()), null);
-            player.sendMessage(new StringTextComponent("Position: " + lab.getPosition().toString()), null);
-            player.sendMessage(new StringTextComponent("Items: " + lab.getSavedItems().toString()), null);
+            player.sendMessage(new StringTextComponent("Type: " + lab.getClass().getSimpleName()), null);
+            player.sendMessage(lab.toText(), null);
         });
 
         return 0;
