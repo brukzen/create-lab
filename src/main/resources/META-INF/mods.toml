@@ -1,0 +1,25 @@
+modLoader="javafml" #mandatory
+loaderVersion="[36,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="All rights reserved"
+[[mods]] #mandatory
+modId="createlab" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Create Lab" #mandatory
+logoFile="examplemod.png" #optional
+credits="" #optional
+authors="Blukzen" #optional
+description='''
+Test laboratory dimension for the Create mod.
+'''
+[[dependencies.createmod]]
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[36,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.createmod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
