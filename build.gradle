@@ -188,8 +188,8 @@ publishing {
             url "https://repsy.io/mvn/blukzen/minecraft/"
             // Set credentials in GRADLE_USER_HOME
             credentials {
-                username = "${maven_username}"
-                password = "${maven_password}"
+                username = "${repsyUsername}"
+                password = "${repsyPassword}"
             }
         }
     }
