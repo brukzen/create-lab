@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 buildscript {
     // Build Dependencies
     repositories {
@@ -14,9 +16,15 @@ apply plugin: 'maven-publish'
 
 group = 'com.blukzen.createlab'
 archivesBaseName = 'createlab'
+version = (String) ['sh', '-c', 'git describe --tags'].execute().text.trim()
+
+if (version.matches("^v((\\d+\\.)?(\\d+\\.)?(\\*|\\d+)-){2}(\\d*)-([a-z|\\d]*)")) {
+    version = (String) "${version}-SNAPSHOT"
+}
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
+println('CreateLab ${this.version}')
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
     // The mappings can be changed at any time, and must be in the following format.
@@ -155,7 +163,7 @@ jar {
             "Specification-Vendor": "createlab",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
-            "Implementation-Version": "${modVersion}",
+            "Implementation-Version": "${this.version}",
             "Implementation-Vendor" :"createlab",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
@@ -184,13 +192,5 @@ publishing {
                 password = "${maven_password}"
             }
         }
-    }
-}
-
-task release() {
-    dependsOn build
-
-    doLast {
-        println "modVersion"
     }
 }
