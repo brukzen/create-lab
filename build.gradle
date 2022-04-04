@@ -12,8 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.5-0.1.0-alpha'
-group = 'com.blukzen.createlab' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'com.blukzen.createlab'
 archivesBaseName = 'createlab'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
@@ -131,7 +130,6 @@ dependencies {
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
     // compile "some.group:artifact:version"
-    runtimeOnly fg.deobf("curse.maven:improvedbackpacks-270457:3509641")
 
     // Real examples
     // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
@@ -157,7 +155,7 @@ jar {
             "Specification-Vendor": "createlab",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
-            "Implementation-Version": "${this.version}",
+            "Implementation-Version": "${modVersion}",
             "Implementation-Vendor" :"createlab",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
@@ -178,7 +176,21 @@ publishing {
     }
     repositories {
         maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
+            name "repsy"
+            url "https://repsy.io/mvn/blukzen/minecraft/"
+            // Set credentials in GRADLE_USER_HOME
+            credentials {
+                username = "${maven_username}"
+                password = "${maven_password}"
+            }
         }
+    }
+}
+
+task release() {
+    dependsOn build
+
+    doLast {
+        println "modVersion"
     }
 }
