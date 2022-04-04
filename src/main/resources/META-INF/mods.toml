@@ -3,15 +3,15 @@ loaderVersion="[36,)" #mandatory This is typically bumped every Minecraft versio
 license="All rights reserved"
 
 [[mods]] #mandatory
-modId="createlab" #mandatory
-version="${file.jarVersion}" #mandatory
-displayName="Create Lab" #mandatory
-logoFile="examplemod.png" #optional
-credits="" #optional
-authors="https://github.com/Blukzen" #optional
-description='''
-Test laboratory dimension for the Create mod.
-'''
+    modId="createlab" #mandatory
+    version="${file.jarVersion}" #mandatory
+    displayName="Create Lab" #mandatory
+    logoFile="examplemod.png" #optional
+    authors="Blukzen" #optional
+    displayURL="https://github.com/Blukzen/CreateLab"
+    description='''
+    Test laboratory dimension for the Create mod.
+    '''
 [[dependencies.createmod]]
     modId="forge" #mandatory
     mandatory=true #mandatory
@@ -23,4 +23,10 @@ Test laboratory dimension for the Create mod.
     mandatory=true
     versionRange="[1.16.5,1.17)"
     ordering="NONE"
+    side="BOTH"
+[[dependencies.createmod]]
+    modId="curios"
+    mandatory=false
+    versionRange="[1.16.5,1.17)"
+    ordering="BEFORE"
     side="BOTH"

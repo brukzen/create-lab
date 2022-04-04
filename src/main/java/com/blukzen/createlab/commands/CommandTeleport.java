@@ -34,7 +34,7 @@ public class CommandTeleport implements Command<CommandSource> {
             ServerWorld world = player.getServer().getLevel(World.OVERWORLD);
 
             player.getCapability(LaboratoryCapability.LABORATORY_CAPABILITY).ifPresent(lab -> {
-                player.inventory.clearContent();
+                lab.clearPlayerInventory(player);
                 lab.restorePlayerData(player);
                 TeleportationTools.teleport(player, world, lab.getPosition());
             });
@@ -43,7 +43,7 @@ public class CommandTeleport implements Command<CommandSource> {
 
             player.getCapability(LaboratoryCapability.LABORATORY_CAPABILITY).ifPresent(lab -> {
                 lab.savePlayerData(player);
-                player.inventory.clearContent();
+                lab.clearPlayerInventory(player);
                 player.setGameMode(GameType.CREATIVE);
                 TeleportationTools.teleport(player, world, new BlockPos(0, 65, 0));
             });

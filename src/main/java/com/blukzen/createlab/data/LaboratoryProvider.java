@@ -1,11 +1,13 @@
 package com.blukzen.createlab.data;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.ModList;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -16,7 +18,11 @@ public class LaboratoryProvider implements ICapabilitySerializable<INBT> {
     private final LazyOptional<ILaboratory> optional;
 
     public LaboratoryProvider(PlayerEntity player) {
-        this.handler = new Laboratory();
+        if (ModList.get().isLoaded("curios")) {
+            this.handler = new LaboratoryCurios();
+        } else {
+            this.handler = new Laboratory();
+        }
         this.optional = LazyOptional.of(() -> this.handler);
     }
 

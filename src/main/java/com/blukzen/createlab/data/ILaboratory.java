@@ -7,6 +7,7 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.world.GameType;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public interface ILaboratory {
     void savePlayerData(ServerPlayerEntity player);
     void restorePlayerData(ServerPlayerEntity player);
+    void clearPlayerInventory(ServerPlayerEntity player);
 
     GameType getGamemode();
     void saveGamemode(GameType gamemode);
@@ -41,4 +43,6 @@ public interface ILaboratory {
 
     INBT serializeNBT();
     void deserializeNBT(INBT nbt);
+
+    IFormattableTextComponent toText();
 }

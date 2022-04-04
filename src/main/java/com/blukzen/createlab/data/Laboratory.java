@@ -10,6 +10,9 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameType;
 import net.minecraftforge.common.util.Constants;
 
@@ -38,6 +41,11 @@ public class Laboratory implements ILaboratory {
     public void restorePlayerData(ServerPlayerEntity player) {
         restoreInventory(player.inventory);
         player.setGameMode(this.gamemode);
+    }
+
+    @Override
+    public void clearPlayerInventory(ServerPlayerEntity player) {
+        player.inventory.clearContent();
     }
 
     @Override
@@ -195,5 +203,18 @@ public class Laboratory implements ILaboratory {
         setSavedOffHand(offhandNBT);
         savePosition(NBTUtil.readBlockPos(positionTag));
         saveGamemode(GameType.byId(tag.getInt(GAMEMODE_KEY)));
+    }
+
+    @Override
+    public IFormattableTextComponent toText() {
+        StringTextComponent component = new StringTextComponent("");
+
+        component.append(TextFormatting.AQUA + "Gamemode: " + TextFormatting.RESET + gamemode + "\n");
+        component.append(TextFormatting.AQUA + "Position: " + TextFormatting.RESET + position.toString() + "\n");
+        component.append(TextFormatting.AQUA + "Items: " + TextFormatting.RESET + "\n" + items.toString() + "\n");
+        component.append(TextFormatting.AQUA + "Armor: " + TextFormatting.RESET + "\n" + armor.toString() + "\n");
+        component.append(TextFormatting.AQUA + "Offhand: " + TextFormatting.RESET + "\n" + offhand.toString() + "\n");
+
+        return component;
     }
 }
