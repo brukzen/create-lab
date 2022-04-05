@@ -1,5 +1,6 @@
 {
   "textures": {
+    "particle": "createlab:block/portal",
     "portal": "createlab:block/portal"
   },
   "elements": [

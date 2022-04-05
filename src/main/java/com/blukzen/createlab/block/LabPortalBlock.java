@@ -30,7 +30,13 @@ public class LabPortalBlock extends Block {
     @Override
     @Deprecated
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return Z_AXIS_AABB;
+        switch (state.getValue(AXIS)) {
+            case Z:
+                return Z_AXIS_AABB;
+            case X:
+            default:
+                return X_AXIS_AABB;
+        }
     }
 
     @Override
