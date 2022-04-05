@@ -1,7 +1,7 @@
 package com.blukzen.createlab.commands;
 
 import com.blukzen.createlab.data.LaboratoryCapability;
-import com.blukzen.createlab.dimension.CreateLabDimensions;
+import com.blukzen.createlab.dimension.LabDimensions;
 import com.blukzen.createlab.util.TeleportationTools;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -30,7 +30,7 @@ public class CommandTeleport implements Command<CommandSource> {
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayerOrException();
 
-        if (player.getCommandSenderWorld().dimension().equals(CreateLabDimensions.LABDIM)) {
+        if (player.getCommandSenderWorld().dimension().equals(LabDimensions.LABDIM)) {
             ServerWorld world = player.getServer().getLevel(World.OVERWORLD);
 
             player.getCapability(LaboratoryCapability.LABORATORY_CAPABILITY).ifPresent(lab -> {
@@ -39,7 +39,7 @@ public class CommandTeleport implements Command<CommandSource> {
                 TeleportationTools.teleport(player, world, lab.getPosition());
             });
         } else {
-            ServerWorld world = player.getServer().getLevel(CreateLabDimensions.LABDIM);
+            ServerWorld world = player.getServer().getLevel(LabDimensions.LABDIM);
 
             player.getCapability(LaboratoryCapability.LABORATORY_CAPABILITY).ifPresent(lab -> {
                 lab.savePlayerData(player);

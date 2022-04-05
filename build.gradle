@@ -23,8 +23,9 @@ if (version.matches("^v((\\d+\\.)?(\\d+\\.)?(\\*|\\d+)-){2}(\\d*)-([a-z|\\d]*)")
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
-println('CreateLab ${this.version}')
+println('CreateLab ' + this.version)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
 minecraft {
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     mappings channel: 'official', version: '1.16.5'
@@ -48,6 +49,8 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+
+            args 'nogui'
 
             mods {
                 createlab {
@@ -112,7 +115,18 @@ jar {
 
 jar.finalizedBy('reobfJar')
 
+def getSecrets() {
+    Properties props = new Properties()
+    if (file('../local.properties').exists()) {
+        props.load(new FileInputStream(file('../secrets.properties')))
+    }
+    return props
+}
+
+Properties secrets = getSecrets()
+
 publishing {
+
     publications {
         mavenJava(MavenPublication) {
             artifact jar
@@ -122,10 +136,9 @@ publishing {
         maven {
             name "repsy"
             url "https://repsy.io/mvn/blukzen/minecraft/"
-            // Set credentials in GRADLE_USER_HOME
             credentials {
-                username = "${repsyUsername}"
-                password = "${repsyPassword}"
+                username =  secrets["REPSY_USERNAME"]
+                password = secrets["REPSY_PASSWORD"]
             }
         }
     }

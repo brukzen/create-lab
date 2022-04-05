@@ -1,5 +1,6 @@
-package com.blukzen.createlab.data;
+package com.blukzen.createlab.integration.curios;
 
+import com.blukzen.createlab.data.Laboratory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;

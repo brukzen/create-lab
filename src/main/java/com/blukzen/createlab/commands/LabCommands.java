@@ -6,7 +6,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 
-public class ModCommands {
+public class LabCommands {
 
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
         LiteralCommandNode<CommandSource> commandSource = dispatcher.register(

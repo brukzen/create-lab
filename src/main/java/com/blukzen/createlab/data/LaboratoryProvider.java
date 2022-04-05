@@ -1,5 +1,6 @@
 package com.blukzen.createlab.data;
 
+import com.blukzen.createlab.integration.curios.LaboratoryCurios;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
