@@ -49,8 +49,8 @@ public class LabPortalBlock extends Block {
 
     @Override
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        if (!entityIn.isOnPortalCooldown()) {
-            ((IEntityMixin) entityIn).setInLabPortal();
+        if (!entityIn.isPassenger() && !entityIn.isVehicle() && entityIn.canChangeDimensions()) {
+            ((IEntityMixin) entityIn).handleInsideLabPortal();
         }
     }
 

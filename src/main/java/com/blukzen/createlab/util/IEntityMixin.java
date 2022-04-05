@@ -1,7 +1,9 @@
 package com.blukzen.createlab.util;
 
 public interface IEntityMixin {
-    void setInLabPortal();
+    void handleInsideLabPortal();
     void handleLabPortal();
     boolean isInsideLabPortal();
+    boolean isOnLabPortalCooldown();
+    void setLabPortalCooldown();
 }

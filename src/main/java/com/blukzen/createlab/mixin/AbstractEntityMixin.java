@@ -18,7 +18,7 @@ public abstract class AbstractEntityMixin extends Entity {
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
-    public void baseTick(CallbackInfo ci) {
-        ((IEntityMixin) this).handleLabPortal();
+    public void tick(CallbackInfo ci) {
+//        ((IEntityMixin) this).handleLabPortal();
     }
 }
