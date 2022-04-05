@@ -1,5 +1,10 @@
 {
   "variants": {
-    "": { "model": "createlab:block/lab_portal" }
+    "axis=x": {
+      "model": "createlab:block/lab_portal_ns"
+    },
+    "axis=z": {
+      "model": "createlab:block/lab_portal_ew"
+    }
   }
 }
