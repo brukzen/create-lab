@@ -22,7 +22,7 @@ public class LabTeleporter implements ITeleporter {
     @Nullable
     @Override
     public PortalInfo getPortalInfo(Entity entity, ServerWorld dest, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
-        CreateLab.LOGGER.info("Teleporting " + entity.getDisplayName() + " to " + dest.dimension().getRegistryName());
+        CreateLab.LOGGER.info("Teleporting " + entity.getDisplayName() + " to " + dest.dimension().getRegistryName().getPath());
         if (dest.dimension() == LabDimensions.LABDIM) {
             if (entity instanceof ServerPlayerEntity) {
                 ServerPlayerEntity player = (ServerPlayerEntity) entity;

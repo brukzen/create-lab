@@ -1,8 +1,8 @@
 package com.blukzen.createlab.block;
 
 import com.blukzen.createlab.util.IEntityMixin;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import com.blukzen.createlab.world.LabPortal;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.Property;
@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class LabPortalBlock extends Block {
@@ -52,6 +53,14 @@ public class LabPortalBlock extends Block {
         if (!entityIn.isPassenger() && !entityIn.isVehicle() && entityIn.canChangeDimensions()) {
             ((IEntityMixin) entityIn).handleInsideLabPortal();
         }
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState newState, IWorld world, BlockPos pos, BlockPos posFrom) {
+        Direction.Axis direction$axis = direction.getAxis();
+        Direction.Axis direction$axis1 = state.getValue(AXIS);
+        boolean flag = direction$axis1 != direction$axis && direction$axis.isHorizontal();
+        return !flag && !newState.is(this) && !(new LabPortal(world, pos, direction$axis1)).isComplete() ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, newState, world, pos, posFrom);
     }
 
 

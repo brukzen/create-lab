@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
 @Mod("createlab")
 public class CreateLab {
     public static final String MODID = "createlab";
-    public static Logger LOGGER = LogManager.getLogger();
+    public static Logger LOGGER = LogManager.getLogger("CreateLab");
 
     public CreateLab() {
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();

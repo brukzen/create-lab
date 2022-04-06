@@ -1,10 +1,11 @@
 package com.blukzen.createlab.mixin;
 
-import com.blukzen.createlab.CreateLab;
 import com.blukzen.createlab.dimension.LabDimensions;
+import com.blukzen.createlab.util.GUIUtil;
 import com.blukzen.createlab.util.IEntityMixin;
 import com.blukzen.createlab.world.LabTeleporter;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
@@ -22,15 +23,14 @@ public abstract class EntityMixin implements IEntityMixin {
     @Unique
     private boolean insideLabPortal;
     @Unique
-    private int labPortalTime;
+    private int labPortalTime = 0;
     @Unique
     private int labPortalCooldown = 0;
+    @Unique
+    private final int labPortalWaittime = 50;
 
     @Shadow
     public World level;
-
-    @Shadow
-    public abstract int getPortalWaitTime();
 
     @Shadow
     public abstract Entity changeDimension(ServerWorld destination, ITeleporter teleporter);
@@ -38,7 +38,11 @@ public abstract class EntityMixin implements IEntityMixin {
     @Shadow
     public abstract boolean isPassenger();
 
-    @Shadow public abstract int getDimensionChangingDelay();
+    @Shadow
+    public abstract boolean is(Entity p_70028_1_);
+
+    @Shadow
+    public abstract EntityType<?> getType();
 
     @Inject(method = "baseTick", at = @At("TAIL"))
     public void baseTick(CallbackInfo ci) {
@@ -56,9 +60,8 @@ public abstract class EntityMixin implements IEntityMixin {
 
     @Override
     public void handleLabPortal() {
-        CreateLab.LOGGER.info("Portal cooldown" + this.labPortalCooldown);
         if (this.level instanceof ServerWorld) {
-            int i = this.getPortalWaitTime();
+            int i = this.labPortalWaittime;
             ServerWorld serverWorld = (ServerWorld) this.level;
 
             if (this.insideLabPortal) {
@@ -68,23 +71,25 @@ public abstract class EntityMixin implements IEntityMixin {
 
                 if (destinationWorld != null && !this.isPassenger() && this.labPortalTime++ >= i) {
                     this.level.getProfiler().push("portal");
-                    this.labPortalTime = i;
+                    this.labPortalTime = 0;
                     this.setLabPortalCooldown();
                     this.changeDimension(destinationWorld, new LabTeleporter());
                     this.level.getProfiler().pop();
                 }
-
-                this.insideLabPortal = false;
             } else {
                 if (this.labPortalTime > 0) {
-                    this.labPortalTime -= 4;
-                }
-
-                if (this.labPortalTime < 0) {
-                    this.labPortalTime = 0;
+                    this.labPortalTime--;
                 }
             }
 
+            if (getType() == EntityType.PLAYER) {
+                GUIUtil guiUtil = GUIUtil.INSTANCE;
+                guiUtil.addDebugMessage("In Portal", String.valueOf(this.insideLabPortal));
+                guiUtil.addDebugMessage("Portal Timer", String.valueOf(this.labPortalTime));
+                guiUtil.addDebugMessage("Portal Countdown", String.valueOf(this.labPortalCooldown));
+            }
+
+            this.insideLabPortal = false;
             this.processLabPortalCooldown();
         }
     }
@@ -101,7 +106,12 @@ public abstract class EntityMixin implements IEntityMixin {
 
     @Override
     public void setLabPortalCooldown() {
-        this.labPortalCooldown = getDimensionChangingDelay();
+        this.labPortalCooldown = 20;
+    }
+
+    @Override
+    public int getLabPortalCooldown() {
+        return this.labPortalCooldown;
     }
 
     protected void processLabPortalCooldown() {

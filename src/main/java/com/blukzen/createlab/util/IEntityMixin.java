@@ -6,4 +6,5 @@ public interface IEntityMixin {
     boolean isInsideLabPortal();
     boolean isOnLabPortalCooldown();
     void setLabPortalCooldown();
+    int getLabPortalCooldown();
 }

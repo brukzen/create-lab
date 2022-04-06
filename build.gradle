@@ -23,7 +23,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'com.blukzen.createlab'
-version = (String) ['sh', '-c', 'git describe --tags'].execute().text.trim()
+version = (String) ['bash', '-c', 'git describe --tags'].execute().text.trim()
 
 if (version.matches("^v((\\d+\\.)?(\\d+\\.)?(\\*|\\d+)-){2}(\\d*)-([a-z|\\d]*)")) {
     version = (String) "${version}-SNAPSHOT"
