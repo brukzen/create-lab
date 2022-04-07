@@ -1,0 +1,82 @@
+package com.blukzen.createlab.mixin;
+
+import com.blukzen.createlab.util.GUIUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.SoundEvents;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Mixin(ClientPlayerEntity.class)
+public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerEntity {
+
+    @Shadow
+    @Final
+    protected Minecraft minecraft;
+
+    @Shadow
+    public abstract void closeContainer();
+
+    @Unique
+    public float oldLabPortalTime;
+
+    protected MixinClientPlayerEntity(Class<Entity> baseClass) {
+        super(baseClass);
+    }
+
+    @Inject(method = "aiStep", at = @At("TAIL"))
+    public void aiStep(CallbackInfo ci) {
+        this.handleLabPortalClient();
+    }
+
+    private void handleLabPortalClient() {
+        this.oldLabPortalTime = this.labPortalTime;
+
+        GUIUtil.INSTANCE.addDebugMessage("Client Inside Portal", String.valueOf(this.insideLabPortal));
+        GUIUtil.INSTANCE.addDebugMessage("Client Portal Time", String.valueOf(this.labPortalTime));
+
+        if (this.insideLabPortal) {
+            if (this.minecraft.screen != null && !this.minecraft.screen.isPauseScreen()) {
+                if (this.minecraft.screen instanceof ContainerScreen) {
+                    this.closeContainer();
+                }
+
+                this.minecraft.setScreen(null);
+            }
+
+            if (this.labPortalTime == 0.0f) {
+                this.minecraft.getSoundManager().play(
+                        SimpleSound.forLocalAmbience(
+                                SoundEvents.PORTAL_TRIGGER,
+                                this.random.nextFloat() * 0.4f + 0.8f,
+                                0.25F
+                        )
+                );
+            }
+
+            this.labPortalTime += 0.0125f;
+
+            if (this.labPortalTime >= 1.0f) {
+                this.labPortalTime = 1.0f;
+            }
+
+            this.insideLabPortal = false;
+        } else {
+            if (this.labPortalTime > 0.0F) {
+                this.labPortalTime -= 0.05F;
+            }
+
+            if (this.labPortalTime < 0.0F) {
+                this.labPortalTime = 0.0F;
+            }
+        }
+    }
+}

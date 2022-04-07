@@ -4,13 +4,16 @@ import com.blukzen.createlab.dimension.LabDimensions;
 import com.blukzen.createlab.util.GUIUtil;
 import com.blukzen.createlab.util.IEntityMixin;
 import com.blukzen.createlab.world.LabTeleporter;
+import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.INameable;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.ITeleporter;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,19 +21,25 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Random;
+
 @Mixin(Entity.class)
-public abstract class EntityMixin implements IEntityMixin {
+public abstract class MixinEntity extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements INameable, ICommandSource, net.minecraftforge.common.extensions.IForgeEntity, IEntityMixin {
     @Unique
-    private boolean insideLabPortal;
+    protected boolean insideLabPortal;
     @Unique
-    private int labPortalTime = 0;
+    protected float labPortalTime = 0;
     @Unique
-    private int labPortalCooldown = 0;
+    private float labPortalCooldown = 0;
     @Unique
-    private final int labPortalWaittime = 50;
+    private final float labPortalWaittime = 50;
 
     @Shadow
     public World level;
+
+    protected MixinEntity(Class<Entity> baseClass) {
+        super(baseClass);
+    }
 
     @Shadow
     public abstract Entity changeDimension(ServerWorld destination, ITeleporter teleporter);
@@ -43,6 +52,8 @@ public abstract class EntityMixin implements IEntityMixin {
 
     @Shadow
     public abstract EntityType<?> getType();
+
+    @Shadow @Final protected Random random;
 
     @Inject(method = "baseTick", at = @At("TAIL"))
     public void baseTick(CallbackInfo ci) {
@@ -61,7 +72,6 @@ public abstract class EntityMixin implements IEntityMixin {
     @Override
     public void handleLabPortal() {
         if (this.level instanceof ServerWorld) {
-            int i = this.labPortalWaittime;
             ServerWorld serverWorld = (ServerWorld) this.level;
 
             if (this.insideLabPortal) {
@@ -69,7 +79,7 @@ public abstract class EntityMixin implements IEntityMixin {
                 RegistryKey<World> registryKey = this.level.dimension() == LabDimensions.LABDIM ? World.OVERWORLD : LabDimensions.LABDIM;
                 ServerWorld destinationWorld = server.getLevel(registryKey);
 
-                if (destinationWorld != null && !this.isPassenger() && this.labPortalTime++ >= i) {
+                if (destinationWorld != null && !this.isPassenger() && this.labPortalTime++ >= this.labPortalWaittime) {
                     this.level.getProfiler().push("portal");
                     this.labPortalTime = 0;
                     this.setLabPortalCooldown();
@@ -110,7 +120,7 @@ public abstract class EntityMixin implements IEntityMixin {
     }
 
     @Override
-    public int getLabPortalCooldown() {
+    public float getLabPortalCooldown() {
         return this.labPortalCooldown;
     }
 
