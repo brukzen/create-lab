@@ -1,6 +1,6 @@
 package com.blukzen.createlab.block;
 
-import com.blukzen.createlab.util.IEntityMixin;
+import com.blukzen.createlab.accessor.EntityAccessor;
 import com.blukzen.createlab.world.LabPortal;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
@@ -51,7 +51,7 @@ public class LabPortalBlock extends Block {
     @Override
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
         if (!entityIn.isPassenger() && !entityIn.isVehicle() && entityIn.canChangeDimensions()) {
-            ((IEntityMixin) entityIn).handleInsideLabPortal();
+            ((EntityAccessor) entityIn).handleInsideLabPortal();
         }
     }
 

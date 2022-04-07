@@ -1,10 +1,17 @@
-package com.blukzen.createlab.util;
+package com.blukzen.createlab.accessor;
 
-public interface IEntityMixin {
+public interface EntityAccessor {
     void handleInsideLabPortal();
+
     void handleLabPortal();
+
     boolean isInsideLabPortal();
+
     boolean isOnLabPortalCooldown();
+
     void setLabPortalCooldown();
+
     float getLabPortalCooldown();
+
+    float getLabPortalTime();
 }

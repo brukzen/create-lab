@@ -1,5 +1,6 @@
 package com.blukzen.createlab.mixin;
 
+import com.blukzen.createlab.accessor.ClientPlayerEntityAccessor;
 import com.blukzen.createlab.util.GUIUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
@@ -16,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerEntity {
+public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntityMixin implements ClientPlayerEntityAccessor {
 
     @Shadow
     @Final
@@ -26,14 +27,14 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     public abstract void closeContainer();
 
     @Unique
-    public float oldLabPortalTime;
+    protected float oldLabPortalTime;
 
-    protected MixinClientPlayerEntity(Class<Entity> baseClass) {
+    protected ClientPlayerEntityMixin(Class<Entity> baseClass) {
         super(baseClass);
     }
 
-    @Inject(method = "aiStep", at = @At("TAIL"))
-    public void aiStep(CallbackInfo ci) {
+    @Inject(method = "tick", at = @At("TAIL"))
+    public void tick(CallbackInfo ci) {
         this.handleLabPortalClient();
     }
 

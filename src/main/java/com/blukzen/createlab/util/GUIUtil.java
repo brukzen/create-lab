@@ -10,7 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GUIUtil {
 
-    public static GUIUtil INSTANCE = new GUIUtil();
+    public static GUIUtil INSTANCE;
+    public boolean enabled = false;
 
     private final Map<String, String> debugMessages = new HashMap<>();
 
@@ -19,17 +20,19 @@ public class GUIUtil {
     }
 
     public void renderDebugMessages(MatrixStack matrix) {
-        FontRenderer font = Minecraft.getInstance().font;
+        if (enabled) {
+            FontRenderer font = Minecraft.getInstance().font;
 
-        matrix.pushPose();
-        matrix.translate(5, 5, 0);
-        {
-            AtomicInteger i = new AtomicInteger();
-            debugMessages.forEach((key, message) -> {
-                font.draw(matrix, key + ": " + message, 0, i.get() * (font.lineHeight + 2), 0xFFFFFF);
-                i.getAndIncrement();
-            });
+            matrix.pushPose();
+            matrix.translate(5, 5, 0);
+            {
+                AtomicInteger i = new AtomicInteger();
+                debugMessages.forEach((key, message) -> {
+                    font.draw(matrix, key + ": " + message, 0, i.get() * (font.lineHeight + 2), 0xFFFFFF);
+                    i.getAndIncrement();
+                });
+            }
+            matrix.popPose();
         }
-        matrix.popPose();
     }
 }

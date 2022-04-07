@@ -5,8 +5,8 @@ import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(AbstractClientPlayerEntity.class)
-public abstract class MixinAbstractClientPlayerEntity extends MixinEntity {
-    protected MixinAbstractClientPlayerEntity(Class<Entity> baseClass) {
+public abstract class AbstractClientPlayerEntityMixin extends LivingEntityMixin {
+    protected AbstractClientPlayerEntityMixin(Class<Entity> baseClass) {
         super(baseClass);
     }
 }

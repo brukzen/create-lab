@@ -1,6 +1,6 @@
 package com.blukzen.createlab.commands;
 
-import com.blukzen.createlab.data.LaboratoryCapability;
+import com.blukzen.createlab.util.GUIUtil;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
@@ -8,8 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public class CommandDebug implements Command<CommandSource> {
     private static final CommandDebug CMD = new CommandDebug();
@@ -22,13 +21,11 @@ public class CommandDebug implements Command<CommandSource> {
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        ServerPlayerEntity player = context.getSource().getPlayerOrException();
+        if (FMLEnvironment.dist.isClient()) {
+            GUIUtil.INSTANCE.enabled = !GUIUtil.INSTANCE.enabled;
+            return 0;
+        }
 
-        player.getCapability(LaboratoryCapability.LABORATORY_CAPABILITY).ifPresent(lab -> {
-            player.sendMessage(new StringTextComponent("Type: " + lab.getClass().getSimpleName()), null);
-            player.sendMessage(lab.toText(), null);
-        });
-
-        return 0;
+        return 1;
     }
 }

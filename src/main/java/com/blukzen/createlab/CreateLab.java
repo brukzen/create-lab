@@ -2,11 +2,13 @@ package com.blukzen.createlab;
 
 import com.blukzen.createlab.block.LabBlocks;
 import com.blukzen.createlab.item.LabItems;
+import com.blukzen.createlab.util.GUIUtil;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod("createlab")
 public class CreateLab {
@@ -19,5 +21,9 @@ public class CreateLab {
         LabItems.ITEMS.register(modbus);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(CreateLabRegistry::init);
+
+        if (FMLEnvironment.dist.isClient()) {
+            GUIUtil.INSTANCE = new GUIUtil();
+        }
     }
 }

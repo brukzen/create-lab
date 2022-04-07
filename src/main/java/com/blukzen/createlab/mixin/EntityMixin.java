@@ -1,8 +1,7 @@
 package com.blukzen.createlab.mixin;
 
+import com.blukzen.createlab.accessor.EntityAccessor;
 import com.blukzen.createlab.dimension.LabDimensions;
-import com.blukzen.createlab.util.GUIUtil;
-import com.blukzen.createlab.util.IEntityMixin;
 import com.blukzen.createlab.world.LabTeleporter;
 import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.Entity;
@@ -24,20 +23,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Random;
 
 @Mixin(Entity.class)
-public abstract class MixinEntity extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements INameable, ICommandSource, net.minecraftforge.common.extensions.IForgeEntity, IEntityMixin {
+public abstract class EntityMixin extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements INameable, ICommandSource, net.minecraftforge.common.extensions.IForgeEntity, EntityAccessor {
     @Unique
     protected boolean insideLabPortal;
+
     @Unique
     protected float labPortalTime = 0;
+
+    @Override
+    public float getLabPortalTime() {
+        return labPortalTime;
+    }
+
     @Unique
     private float labPortalCooldown = 0;
+
     @Unique
     private final float labPortalWaittime = 50;
 
     @Shadow
     public World level;
 
-    protected MixinEntity(Class<Entity> baseClass) {
+    protected EntityMixin(Class<Entity> baseClass) {
         super(baseClass);
     }
 
@@ -46,9 +53,6 @@ public abstract class MixinEntity extends net.minecraftforge.common.capabilities
 
     @Shadow
     public abstract boolean isPassenger();
-
-    @Shadow
-    public abstract boolean is(Entity p_70028_1_);
 
     @Shadow
     public abstract EntityType<?> getType();
@@ -90,13 +94,6 @@ public abstract class MixinEntity extends net.minecraftforge.common.capabilities
                 if (this.labPortalTime > 0) {
                     this.labPortalTime--;
                 }
-            }
-
-            if (getType() == EntityType.PLAYER) {
-                GUIUtil guiUtil = GUIUtil.INSTANCE;
-                guiUtil.addDebugMessage("In Portal", String.valueOf(this.insideLabPortal));
-                guiUtil.addDebugMessage("Portal Timer", String.valueOf(this.labPortalTime));
-                guiUtil.addDebugMessage("Portal Countdown", String.valueOf(this.labPortalCooldown));
             }
 
             this.insideLabPortal = false;
