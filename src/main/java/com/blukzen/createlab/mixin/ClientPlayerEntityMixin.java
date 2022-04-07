@@ -29,6 +29,11 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
     @Unique
     protected float oldLabPortalTime;
 
+    @Override
+    public float getOldLabPortalTime() {
+        return this.oldLabPortalTime;
+    }
+
     protected ClientPlayerEntityMixin(Class<Entity> baseClass) {
         super(baseClass);
     }
@@ -63,7 +68,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
                 );
             }
 
-            this.labPortalTime += 0.0125f;
+            this.labPortalTime += 0.02f;
 
             if (this.labPortalTime >= 1.0f) {
                 this.labPortalTime = 1.0f;
