@@ -2,13 +2,15 @@ package com.blukzen.createlab.block;
 
 import com.blukzen.createlab.CreateLab;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -24,5 +26,10 @@ public class LabBlocks {
     @SubscribeEvent
     public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
         LabBlockItems.registerBlockItems(evt);
+    }
+
+    @SubscribeEvent
+    public static void setup(FMLClientSetupEvent evt) {
+        RenderTypeLookup.setRenderLayer(LAB_PORTAL.get(), RenderType.translucent());
     }
 }

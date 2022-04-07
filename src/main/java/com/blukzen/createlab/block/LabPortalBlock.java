@@ -2,7 +2,9 @@ package com.blukzen.createlab.block;
 
 import com.blukzen.createlab.accessor.EntityAccessor;
 import com.blukzen.createlab.world.LabPortal;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.Property;
