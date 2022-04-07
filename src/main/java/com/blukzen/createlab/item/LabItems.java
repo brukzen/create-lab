@@ -5,12 +5,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class LabItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CreateLab.MODID);
+    public static final RegistryObject<PortalCatalystItem> PORTAL_CATALYST = ITEMS.register("portal_catalyst", PortalCatalystItem::new);
 
     public static ItemGroup creativeTab = new ItemGroup(CreateLab.MODID) {
         @Override
