@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "X X",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:gems/quartz"
+    }
+  },
+  "result": {
+    "item": "createlab:portal_catalyst",
+    "count": 1
+  }
+}
