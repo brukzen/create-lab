@@ -3,7 +3,6 @@ package com.blukzen.createlab.render;
 import com.blukzen.createlab.CreateLab;
 import com.blukzen.createlab.accessor.ClientPlayerEntityAccessor;
 import com.blukzen.createlab.block.LabBlocks;
-import com.blukzen.createlab.util.GUIUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -27,10 +26,6 @@ public class RenderEventHandler {
 
             if (player != null) {
                 float f = player.getOldLabPortalTime() + (player.getLabPortalTime() - player.getOldLabPortalTime()) * evt.getPartialTicks();
-                GUIUtil.INSTANCE.addDebugMessage("f", String.valueOf(f));
-                GUIUtil.INSTANCE.addDebugMessage("getLabPortalTime", String.valueOf(player.getLabPortalTime()));
-                GUIUtil.INSTANCE.addDebugMessage("getOldLabPortalTime", String.valueOf(player.getOldLabPortalTime()));
-
                 if (f > 0) {
                     renderPortalOverlay(f);
                 }

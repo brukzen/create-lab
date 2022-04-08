@@ -1,9 +1,11 @@
 package com.blukzen.createlab.world;
 
-import com.blukzen.createlab.CreateLab;
 import com.blukzen.createlab.block.LabBlocks;
 import com.blukzen.createlab.block.LabPortalBlock;
-import net.minecraft.block.*;
+import com.blukzen.createlab.util.GUIUtil;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -14,8 +16,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class LabPortal {
-    private static final AbstractBlock.IPositionPredicate FRAME = (p_242966_0_, p_242966_1_, p_242966_2_) -> {
-        return p_242966_0_.getBlock().is(Blocks.SMOOTH_QUARTZ);
+    private static final AbstractBlock.IPositionPredicate FRAME = (blockState, blockReader, blockPos) -> {
+        return blockState.getBlock().is(Blocks.SMOOTH_QUARTZ);
     };
     private final IWorld level;
     private final Direction.Axis axis;
@@ -26,29 +28,29 @@ public class LabPortal {
     private int height;
     private int width;
 
-    public static Optional<LabPortal> findEmptyPortalShape(IWorld p_242964_0_, BlockPos p_242964_1_, Direction.Axis p_242964_2_) {
-        return findPortalShape(p_242964_0_, p_242964_1_, (p_242968_0_) -> {
-            return p_242968_0_.isValid() && p_242968_0_.numPortalBlocks == 0;
-        }, p_242964_2_);
+    public static Optional<LabPortal> findEmptyPortalShape(IWorld world, BlockPos blockPos, Direction.Axis axis) {
+        return findPortalShape(world, blockPos, (labPortal) -> {
+            return labPortal.isValid() && labPortal.numPortalBlocks == 0;
+        }, axis);
     }
 
-    public static Optional<LabPortal> findPortalShape(IWorld p_242965_0_, BlockPos p_242965_1_, Predicate<LabPortal> p_242965_2_, Direction.Axis p_242965_3_) {
-        Optional<LabPortal> optional = Optional.of(new LabPortal(p_242965_0_, p_242965_1_, p_242965_3_)).filter(p_242965_2_);
+    public static Optional<LabPortal> findPortalShape(IWorld world, BlockPos blockPos, Predicate<LabPortal> labPortalPredicate, Direction.Axis axis) {
+        Optional<LabPortal> optional = Optional.of(new LabPortal(world, blockPos, axis)).filter(labPortalPredicate);
         if (optional.isPresent()) {
             return optional;
         } else {
-            Direction.Axis direction$axis = p_242965_3_ == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
-            return Optional.of(new LabPortal(p_242965_0_, p_242965_1_, direction$axis)).filter(p_242965_2_);
+            Direction.Axis direction$axis = axis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
+            return Optional.of(new LabPortal(world, blockPos, direction$axis)).filter(labPortalPredicate);
         }
     }
 
-    public LabPortal(IWorld level, BlockPos p_i48740_2_, Direction.Axis p_i48740_3_) {
+    public LabPortal(IWorld level, BlockPos blockPos, Direction.Axis axis) {
         this.level = level;
-        this.axis = p_i48740_3_;
-        this.rightDir = p_i48740_3_ == Direction.Axis.X ? Direction.WEST : Direction.SOUTH;
-        this.bottomLeft = this.calculateBottomLeft(p_i48740_2_);
+        this.axis = axis;
+        this.rightDir = axis == Direction.Axis.X ? Direction.WEST : Direction.SOUTH;
+        this.bottomLeft = this.calculateBottomLeft(blockPos);
         if (this.bottomLeft == null) {
-            this.bottomLeft = p_i48740_2_;
+            this.bottomLeft = blockPos;
             this.width = 1;
             this.height = 1;
         } else {
@@ -58,7 +60,13 @@ public class LabPortal {
             }
         }
 
-        CreateLab.LOGGER.info("Portal Definition");
+        GUIUtil gui = GUIUtil.INSTANCE;
+        gui.addDebugMessage("Portal Width", String.valueOf(width));
+        gui.addDebugMessage("Portal Height", String.valueOf(height));
+        gui.addDebugMessage("Portal Axis", this.axis.getName());
+        gui.addDebugMessage("Portal Right", rightDir.getName());
+        gui.addDebugMessage("Portal Bottom Left", bottomLeft.toString());
+
     }
 
     @Nullable
@@ -76,11 +84,11 @@ public class LabPortal {
         return i >= 2 && i <= 21 ? i : 0;
     }
 
-    private int getDistanceUntilEdgeAboveFrame(BlockPos p_242972_1_, Direction p_242972_2_) {
+    private int getDistanceUntilEdgeAboveFrame(BlockPos blockPos, Direction direction) {
         BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
         for (int i = 0; i <= 21; ++i) {
-            blockpos$mutable.set(p_242972_1_).move(p_242972_2_, i);
+            blockpos$mutable.set(blockPos).move(direction, i);
             BlockState blockstate = this.level.getBlockState(blockpos$mutable);
             if (!isEmpty(blockstate)) {
                 if (FRAME.test(blockstate, this.level, blockpos$mutable)) {
@@ -104,9 +112,9 @@ public class LabPortal {
         return i >= 3 && i <= 21 && this.hasTopFrame(blockpos$mutable, i) ? i : 0;
     }
 
-    private boolean hasTopFrame(BlockPos.Mutable p_242970_1_, int p_242970_2_) {
+    private boolean hasTopFrame(BlockPos.Mutable blockPos, int p_242970_2_) {
         for (int i = 0; i < this.width; ++i) {
-            BlockPos.Mutable blockpos$mutable = p_242970_1_.set(this.bottomLeft).move(Direction.UP, p_242970_2_).move(this.rightDir, i);
+            BlockPos.Mutable blockpos$mutable = blockPos.set(this.bottomLeft).move(Direction.UP, p_242970_2_).move(this.rightDir, i);
             if (!FRAME.test(this.level.getBlockState(blockpos$mutable), this.level, blockpos$mutable)) {
                 return false;
             }
@@ -115,26 +123,26 @@ public class LabPortal {
         return true;
     }
 
-    private int getDistanceUntilTop(BlockPos.Mutable p_242969_1_) {
+    private int getDistanceUntilTop(BlockPos.Mutable blockPos) {
         for (int i = 0; i < 21; ++i) {
-            p_242969_1_.set(this.bottomLeft).move(Direction.UP, i).move(this.rightDir, -1);
-            if (!FRAME.test(this.level.getBlockState(p_242969_1_), this.level, p_242969_1_)) {
+            blockPos.set(this.bottomLeft).move(Direction.UP, i).move(this.rightDir, -1);
+            if (!FRAME.test(this.level.getBlockState(blockPos), this.level, blockPos)) {
                 return i;
             }
 
-            p_242969_1_.set(this.bottomLeft).move(Direction.UP, i).move(this.rightDir, this.width);
-            if (!FRAME.test(this.level.getBlockState(p_242969_1_), this.level, p_242969_1_)) {
+            blockPos.set(this.bottomLeft).move(Direction.UP, i).move(this.rightDir, this.width);
+            if (!FRAME.test(this.level.getBlockState(blockPos), this.level, blockPos)) {
                 return i;
             }
 
             for (int j = 0; j < this.width; ++j) {
-                p_242969_1_.set(this.bottomLeft).move(Direction.UP, i).move(this.rightDir, j);
-                BlockState blockstate = this.level.getBlockState(p_242969_1_);
+                blockPos.set(this.bottomLeft).move(Direction.UP, i).move(this.rightDir, j);
+                BlockState blockstate = this.level.getBlockState(blockPos);
                 if (!isEmpty(blockstate)) {
                     return i;
                 }
 
-                if (blockstate.is(Blocks.NETHER_PORTAL)) {
+                if (blockstate.is(LabBlocks.LAB_PORTAL.get())) {
                     ++this.numPortalBlocks;
                 }
             }
@@ -143,8 +151,8 @@ public class LabPortal {
         return 21;
     }
 
-    private static boolean isEmpty(BlockState p_196900_0_) {
-        return p_196900_0_.isAir() || p_196900_0_.is(BlockTags.FIRE) || p_196900_0_.is(Blocks.NETHER_PORTAL);
+    private static boolean isEmpty(BlockState blockState) {
+        return blockState.isAir() || blockState.is(BlockTags.FIRE) || blockState.is(LabBlocks.LAB_PORTAL.get());
     }
 
     public boolean isValid() {
@@ -153,8 +161,8 @@ public class LabPortal {
 
     public void createPortalBlocks() {
         BlockState blockstate = LabBlocks.LAB_PORTAL.get().defaultBlockState().setValue(LabPortalBlock.AXIS, this.axis);
-        BlockPos.betweenClosed(this.bottomLeft, this.bottomLeft.relative(Direction.UP, this.height - 1).relative(this.rightDir, this.width - 1)).forEach((p_242967_2_) -> {
-            this.level.setBlock(p_242967_2_, blockstate, 18);
+        BlockPos.betweenClosed(this.bottomLeft, this.bottomLeft.relative(Direction.UP, this.height - 1).relative(this.rightDir, this.width - 1)).forEach((blockPos) -> {
+            this.level.setBlock(blockPos, blockstate, 18);
         });
     }
 

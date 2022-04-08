@@ -1,7 +1,6 @@
 package com.blukzen.createlab.mixin;
 
 import com.blukzen.createlab.accessor.ClientPlayerEntityAccessor;
-import com.blukzen.createlab.util.GUIUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -45,9 +44,6 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 
     private void handleLabPortalClient() {
         this.oldLabPortalTime = this.labPortalTime;
-
-        GUIUtil.INSTANCE.addDebugMessage("Client Inside Portal", String.valueOf(this.insideLabPortal));
-        GUIUtil.INSTANCE.addDebugMessage("Client Portal Time", String.valueOf(this.labPortalTime));
 
         if (this.insideLabPortal) {
             if (this.minecraft.screen != null && !this.minecraft.screen.isPauseScreen()) {

@@ -35,4 +35,8 @@ public class GUIUtil {
             matrix.popPose();
         }
     }
+
+    public void clear() {
+        debugMessages.clear();
+    }
 }
