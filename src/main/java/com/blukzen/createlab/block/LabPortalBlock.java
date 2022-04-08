@@ -64,6 +64,4 @@ public class LabPortalBlock extends Block {
         boolean flag = direction$axis1 != direction$axis && direction$axis.isHorizontal();
         return !flag && !newState.is(this) && !(new LabPortal(world, pos, direction$axis1)).isComplete() ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, newState, world, pos, posFrom);
     }
-
-
 }

@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GUIUtil {
 
     public static GUIUtil INSTANCE;
-    public boolean enabled = true;
+    public boolean enabled = false;
 
     private final Map<String, String> debugMessages = new HashMap<>();
 
