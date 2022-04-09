@@ -24,6 +24,13 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
+        
+    - name: Build version
+      id: build_version
+      run: |
+          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
 
     - name: Set up environment
       run: echo -e "REPSY_USERNAME=${{ secrets.REPSY_USERNAME }}\nREPSY_PASSWORD=${{ secrets.REPSY_PASSWORD }}" > ./secrets.properties
@@ -36,7 +43,7 @@ jobs:
     - name: Create release
       uses: ncipollo/release-action@v1
       with:
-        name: 'Create Lab ${{ env.GITHUB_REF_NAME }}'
-        artifacts: 'build/libs/createlab-${{ env.GITHUB_REF_NAME }}.jar'
+        name: 'Create Lab ${{ steps.build_version.outputs.SOURCE_TAG }}'
+        artifacts: 'build/libs/createlab-${{ steps.build_version.outputs.SOURCE_TAG }}.jar'
         generateReleaseNotes: true
         token: ${{ secrets.GITHUB_TOKEN }}
