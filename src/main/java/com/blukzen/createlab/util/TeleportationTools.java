@@ -20,11 +20,4 @@ public class TeleportationTools {
             }
         });
     }
-
-//    public static void changeDimension(ServerWorld destination, Entity entity, ITeleporter teleporter) {
-//        if (entity.level instanceof ServerWorld && !entity.removed) {
-//            entity.unRide();
-//            PortalInfo portalInfo = teleporter.getPortalInfo(entity, destination, entity.findDim)
-//        }
-//    }
 }
