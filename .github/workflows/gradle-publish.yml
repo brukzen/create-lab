@@ -28,7 +28,7 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Set up environment
-      run: echo -e "REPSY_USERNAME=${{ secrets.REPSY_USERNAME }}\nREPSY_PASSWORD=${{ REPSY_PASSWORD }}" > ./secrets.properties
+      run: echo -e "REPSY_USERNAME=${{ secrets.REPSY_USERNAME }}\nREPSY_PASSWORD=${{ secrets.REPSY_PASSWORD }}" > ./secrets.properties
 
     - name: Publish
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
