@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - v*
+  workflow_dispatch:
 
 jobs:
   build:
@@ -44,6 +45,6 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: 'Create Lab ${{ steps.build_version.outputs.SOURCE_TAG }}'
-        artifacts: 'build/libs/createlab-${{ steps.build_version.outputs.SOURCE_TAG }}.jar'
+        artifacts: './build/libs/createlab-${{ steps.build_version.outputs.SOURCE_TAG }}.jar'
         generateReleaseNotes: true
         token: ${{ secrets.GITHUB_TOKEN }}
