@@ -2,12 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " X ",
-    "X X",
+    "XAX",
     " X "
   ],
   "key": {
     "X": {
       "tag": "forge:gems/quartz"
+    },
+    "A": {
+      "tag": "forge:gems/diamond"
     }
   },
   "result": {
