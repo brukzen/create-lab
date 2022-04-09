@@ -40,11 +40,3 @@ jobs:
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
         arguments: publish 
-
-    - name: Create release
-      uses: ncipollo/release-action@v1
-      with:
-        name: 'Create Lab ${{ env.GITHUB_REF_NAME }}'
-        artifacts: 'build/libs/createlab-${{ env.GITHUB_REF_NAME }}.jar'
-        generateReleaseNotes: true
-        token: ${{ secrets.GITHUB_TOKEN }}
