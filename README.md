@@ -1,4 +1,6 @@
-# Create Lab [![Build](https://github.com/Blukzen/CreateLab/actions/workflows/gradle-publish.yml/badge.svg?branch=develop)](https://github.com/Blukzen/CreateLab/actions/workflows/gradle-publish.yml)
+# Create Lab [![Release](https://github.com/Blukzen/CreateLab/actions/workflows/release.yml/badge.svg)](https://github.com/Blukzen/CreateLab/actions/workflows/release.yml) [![Snapshots](https://github.com/Blukzen/CreateLab/actions/workflows/snapshots.yml/badge.svg)](https://github.com/Blukzen/CreateLab/actions/workflows/snapshots.yml)
+
+![Downloads](https://cf.way2muchnoise.eu/606804.svg?badge_style=for_the_badge) ![Versions](https://cf.way2muchnoise.eu/versions/606804.svg?badge_style=for_the_badge)
 
 ## Overview
 
