@@ -1,6 +1,7 @@
 {
   "required": true,
   "package": "com.blukzen.createlab.mixin",
+  "refmap": "createlab.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "minVersion": "0.8",
   "mixins": [
@@ -8,6 +9,8 @@
     "ServerPlayerEntityMixin"
   ],
   "client": [
+    "LivingEntityMixin",
+    "PlayerEntityMixin",
     "AbstractClientPlayerEntityMixin",
     "ClientPlayerEntityMixin"
   ]

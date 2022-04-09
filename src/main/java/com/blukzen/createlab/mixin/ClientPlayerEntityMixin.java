@@ -37,8 +37,8 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
         super(baseClass);
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
-    public void tick(CallbackInfo ci) {
+    @Inject(method = "aiStep", at = @At("HEAD"))
+    public void aiStep(CallbackInfo ci) {
         this.handleLabPortalClient();
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -60,12 +61,14 @@ public class LabPortal {
             }
         }
 
-        GUIUtil gui = GUIUtil.INSTANCE;
-        gui.addDebugMessage("Portal Width", String.valueOf(width));
-        gui.addDebugMessage("Portal Height", String.valueOf(height));
-        gui.addDebugMessage("Portal Axis", this.axis.getName());
-        gui.addDebugMessage("Portal Right", rightDir.getName());
-        gui.addDebugMessage("Portal Bottom Left", bottomLeft.toString());
+        if (FMLEnvironment.dist.isClient()) {
+            GUIUtil gui = GUIUtil.INSTANCE;
+            gui.addDebugMessage("Portal Width", String.valueOf(width));
+            gui.addDebugMessage("Portal Height", String.valueOf(height));
+            gui.addDebugMessage("Portal Axis", this.axis.getName());
+            gui.addDebugMessage("Portal Right", rightDir.getName());
+            gui.addDebugMessage("Portal Bottom Left", bottomLeft.toString());
+        }
 
     }
 

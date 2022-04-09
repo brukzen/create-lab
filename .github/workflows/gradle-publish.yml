@@ -16,6 +16,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
+
     - name: Set up JDK 8
       uses: actions/setup-java@v3
       with:
@@ -23,11 +24,14 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
-        
+
+    - name: Set up environment
+      run: echo -e "REPSY_USERNAME=${{ secrets.REPSY_USERNAME }}\nREPSY_PASSWORD=${{ REPSY_PASSWORD }}" > ./secrets.properties
+
     - name: Publish
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
-        arguments: publish -PrepsyUsername=${{ secrets.REPSY_USERNAME }} -PrepsyPassword=${{ secrets.REPSY_PASSWORD }}
+        arguments: publish 
 
     - name: Create release
       uses: ncipollo/release-action@v1

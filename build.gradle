@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -115,7 +115,9 @@ dependencies {
 }
 
 mixin {
+    defaultObfuscationEnv "searge"
     add sourceSets.main, "createlab.refmap.json"
+    config "createlab.mixins.json"
 }
 
 jar {
@@ -137,8 +139,8 @@ jar.finalizedBy('reobfJar')
 
 def getSecrets() {
     Properties props = new Properties()
-    if (file('../local.properties').exists()) {
-        props.load(new FileInputStream(file('../secrets.properties')))
+    if (file('./secrets.properties').exists()) {
+        props.load(new FileInputStream(file('./secrets.properties')))
     }
     return props
 }

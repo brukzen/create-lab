@@ -5,7 +5,6 @@ import com.blukzen.createlab.dimension.LabDimensions;
 import com.blukzen.createlab.world.LabTeleporter;
 import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.INameable;
 import net.minecraft.util.RegistryKey;
@@ -20,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 @Mixin(Entity.class)
@@ -49,15 +49,11 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     }
 
     @Shadow
-    public abstract Entity changeDimension(ServerWorld destination, ITeleporter teleporter);
-
-    @Shadow
     public abstract boolean isPassenger();
 
-    @Shadow
-    public abstract EntityType<?> getType();
-
     @Shadow @Final protected Random random;
+
+    @Shadow @Nullable public abstract Entity changeDimension(ServerWorld p_241206_1_, ITeleporter labTeleporter);
 
     @Inject(method = "baseTick", at = @At("TAIL"))
     public void baseTick(CallbackInfo ci) {
@@ -87,7 +83,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                     this.level.getProfiler().push("portal");
                     this.labPortalTime = 0;
                     this.setLabPortalCooldown();
-                    this.changeDimension(destinationWorld, new LabTeleporter());
+                    changeDimension(destinationWorld, new LabTeleporter());
                     this.level.getProfiler().pop();
                 }
             } else {
