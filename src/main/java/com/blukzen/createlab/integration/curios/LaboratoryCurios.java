@@ -44,8 +44,8 @@ public class LaboratoryCurios extends Laboratory {
     }
 
     @Override
-    public void clearPlayerInventory(ServerPlayerEntity player) {
-        super.clearPlayerInventory(player);
+    public void resetPlayer(ServerPlayerEntity player) {
+        super.resetPlayer(player);
         CuriosApi.getCuriosHelper().getCuriosHandler(player).ifPresent(ICuriosItemHandler::reset);
     }
 

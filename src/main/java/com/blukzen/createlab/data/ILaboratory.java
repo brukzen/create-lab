@@ -15,7 +15,7 @@ import java.util.List;
 public interface ILaboratory {
     void savePlayerData(ServerPlayerEntity player);
     void restorePlayerData(ServerPlayerEntity player);
-    void clearPlayerInventory(ServerPlayerEntity player);
+    void resetPlayer(ServerPlayerEntity player);
 
     GameType getGamemode();
     void saveGamemode(GameType gamemode);

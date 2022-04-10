@@ -28,7 +28,7 @@ public class LabTeleporter implements ITeleporter {
                 ServerPlayerEntity player = (ServerPlayerEntity) entity;
                 entity.getCapability(LaboratoryCapability.LABORATORY_CAPABILITY).ifPresent(lab -> {
                     lab.savePlayerData(player);
-                    lab.clearPlayerInventory(player);
+                    lab.resetPlayer(player);
                     player.setGameMode(GameType.CREATIVE);
                 });
             }
@@ -39,7 +39,7 @@ public class LabTeleporter implements ITeleporter {
                 ServerPlayerEntity player = (ServerPlayerEntity) entity;
                 ILaboratory lab = entity.getCapability(LaboratoryCapability.LABORATORY_CAPABILITY).orElseThrow(RuntimeException::new);
 
-                lab.clearPlayerInventory(player);
+                lab.resetPlayer(player);
                 lab.restorePlayerData(player);
                 return new PortalInfo(Vector3d.atCenterOf(lab.getPosition()), Vector3d.ZERO, entity.yRot, entity.xRot);
             }

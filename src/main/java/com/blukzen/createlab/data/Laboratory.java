@@ -29,26 +29,35 @@ public class Laboratory implements ILaboratory {
     ListNBT armor = new ListNBT();
     ListNBT items = new ListNBT();
     ListNBT offhand = new ListNBT();
+    int experienceLevels;
+    float experienceProgress;
 
     @Override
     public void savePlayerData(ServerPlayerEntity player) {
         saveInventory(player.inventory);
         savePosition(player.blockPosition());
         saveGamemode(player.gameMode.getGameModeForPlayer());
+        experienceLevels = player.experienceLevel;
+        experienceProgress = player.experienceProgress;
     }
 
     @Override
     public void restorePlayerData(ServerPlayerEntity player) {
         restoreInventory(player.inventory);
         player.setGameMode(this.gamemode);
+        player.experienceLevel = experienceLevels;
+        player.experienceProgress = experienceProgress;
     }
 
     @Override
-    public void clearPlayerInventory(ServerPlayerEntity player) {
+    public void resetPlayer(ServerPlayerEntity player) {
         player.inventory.clearContent();
+        player.setExperienceLevels(0);
+        player.setExperiencePoints(0);
     }
 
     @Override
+
     public GameType getGamemode() {
         return this.gamemode;
     }
