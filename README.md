@@ -28,6 +28,9 @@ Create lab is a dimension mod initially designed to be paired with the Create mo
 - Curios integration, curios inventory slots will also be kept separate from survival dimensions.
 
 ## How to use
-1. Craft the laboratory portal catalyst using 4 quartz and a diamond.
-2. Build a portal frame using smooth quartz, the portal frame rules are the same as vanilla nether portals.
-3. Right click on the portal frame using the laboratory catalyst
+1. Craft the laboratory portal catalyst using 4 quartz and a diamond. 
+   ![](https://github.com/Blukzen/CreateLab/blob/develop/docs/how_to_use_1.png?raw=true)
+2. Build a portal frame using smooth quartz, the portal frame rules are the same as vanilla nether portals. 
+   <img src="https://github.com/Blukzen/CreateLab/blob/develop/docs/how_to_use_2.png?raw=true" width="500px"/>
+3. Right click on the portal frame using the laboratory catalyst  
+    <img src="https://github.com/Blukzen/CreateLab/blob/develop/docs/how_to_use_3.png?raw=true" width="500px"/>
