@@ -1,5 +1,6 @@
 package com.blukzen.createlab.commands;
 
+import com.blukzen.createlab.CreateLabConfig;
 import com.blukzen.createlab.util.GUIUtil;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -24,7 +25,7 @@ public class CommandDebug implements Command<CommandSource>, SuggestionProvider<
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("debug")
-                .requires(cs -> cs.hasPermission(0))
+                .requires(cs -> cs.hasPermission(CreateLabConfig.debugCommandPermissionLevel.get()))
                 .executes(CMD)
                 .then(
                         RequiredArgumentBuilder.<CommandSource, String>argument("args", StringArgumentType.greedyString())
