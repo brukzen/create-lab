@@ -1,5 +1,6 @@
 package com.blukzen.createlab.commands;
 
+import com.blukzen.createlab.CreateLabConfig;
 import com.blukzen.createlab.data.LaboratoryCapability;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -15,7 +16,7 @@ public class CommandSaveInventory implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("save")
-                .requires(cs -> cs.hasPermission(0))
+                .requires(cs -> cs.hasPermission(CreateLabConfig.saveCommandPermissionLevel.get()))
                 .executes(CMD);
     }
 

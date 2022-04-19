@@ -1,11 +1,11 @@
 package com.blukzen.createlab.world;
 
+import com.blukzen.createlab.CreateLabConfig;
 import com.blukzen.createlab.block.LabBlocks;
 import com.blukzen.createlab.block.LabPortalBlock;
 import com.blukzen.createlab.util.GUIUtil;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -17,9 +17,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class LabPortal {
-    private static final AbstractBlock.IPositionPredicate FRAME = (blockState, blockReader, blockPos) -> {
-        return blockState.getBlock().is(Blocks.SMOOTH_QUARTZ);
-    };
+    private static final AbstractBlock.IPositionPredicate FRAME = (blockState, blockReader, blockPos) -> CreateLabConfig.labPortalFrameBlocks.get().contains(blockState.getBlock().getRegistryName().toString());
     private final IWorld level;
     private final Direction.Axis axis;
     private final Direction rightDir;

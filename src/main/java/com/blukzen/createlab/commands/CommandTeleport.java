@@ -1,5 +1,6 @@
 package com.blukzen.createlab.commands;
 
+import com.blukzen.createlab.CreateLabConfig;
 import com.blukzen.createlab.data.LaboratoryCapability;
 import com.blukzen.createlab.dimension.LabDimensions;
 import com.blukzen.createlab.util.TeleportationTools;
@@ -22,7 +23,7 @@ public class CommandTeleport implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("tp")
-                .requires(cs -> cs.hasPermission(0))
+                .requires(cs -> cs.hasPermission(CreateLabConfig.tpCommandPermissionLevel.get()))
                 .executes(CMD);
     }
 
