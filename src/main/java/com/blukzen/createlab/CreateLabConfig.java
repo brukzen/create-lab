@@ -9,6 +9,7 @@ public class CreateLabConfig {
     public static final ForgeConfigSpec COMMON_SPEC;
 
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> labPortalFrameBlocks;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> disabledItems;
     public static ForgeConfigSpec.IntValue tpCommandPermissionLevel;
     public static ForgeConfigSpec.IntValue debugCommandPermissionLevel;
     public static ForgeConfigSpec.IntValue saveCommandPermissionLevel;
@@ -21,6 +22,7 @@ public class CreateLabConfig {
 
     private static void setupConfig(ForgeConfigSpec.Builder builder) {
         labPortalFrameBlocks = builder.comment("Blocks that can be used as a lab portal frame").defineList("lab_portal_frame_blocks", Arrays.asList("minecraft:smooth_quartz", "minecraft:quartz_block"), entry -> true);
+        disabledItems = builder.comment("Blocks and items that are disabled in the laboratory dimension").defineList("disabled_items", Arrays.asList("minecraft:ender_chest"), entry -> true);
 
         builder.push("Command Permission Levels");
         {
