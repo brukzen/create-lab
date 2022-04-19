@@ -4,7 +4,9 @@ import com.blukzen.createlab.block.LabBlocks;
 import com.blukzen.createlab.item.LabItems;
 import com.blukzen.createlab.util.GUIUtil;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +23,7 @@ public class CreateLab {
         LabItems.ITEMS.register(modbus);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(CreateLabRegistry::init);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CreateLabConfig.COMMON_SPEC, "createlab-common.toml");
 
         if (FMLEnvironment.dist.isClient()) {
             GUIUtil.INSTANCE = new GUIUtil();
