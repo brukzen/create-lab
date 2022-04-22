@@ -6,6 +6,7 @@ import com.blukzen.createlab.world.LabTeleporter;
 import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.INameable;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
@@ -83,7 +84,15 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                     this.level.getProfiler().push("portal");
                     this.labPortalTime = 0;
                     this.setLabPortalCooldown();
-                    changeDimension(destinationWorld, new LabTeleporter());
+                    LabTeleporter labTeleporter = new LabTeleporter(destinationWorld);
+
+                    if (destinationWorld.dimension() == LabDimensions.LABDIM) {
+                        if (!labTeleporter.hasPortal()) {
+                            labTeleporter.createPortal(Direction.Axis.X);
+                        }
+                    }
+
+                    changeDimension(destinationWorld, new LabTeleporter(destinationWorld));
                     this.level.getProfiler().pop();
                 }
             } else {
@@ -111,6 +120,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     public void setLabPortalCooldown() {
         this.labPortalCooldown = 20;
     }
+
 
     @Override
     public float getLabPortalCooldown() {
