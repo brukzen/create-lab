@@ -3,7 +3,6 @@ package com.blukzen.createlab;
 import com.blukzen.createlab.block.LabBlocks;
 import com.blukzen.createlab.item.LabItems;
 import com.blukzen.createlab.util.GUIUtil;
-import com.blukzen.createlab.world.LabPointOfInterestType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -22,7 +21,6 @@ public class CreateLab {
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
         LabBlocks.BLOCKS.register(modbus);
         LabItems.ITEMS.register(modbus);
-        LabPointOfInterestType.POI_TYPE.register(modbus);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(CreateLabRegistry::init);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CreateLabConfig.COMMON_SPEC, "createlab-common.toml");
